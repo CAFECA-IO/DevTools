@@ -21,7 +21,6 @@
         "paths": {
             "@/*": [
                 "src/*",
-                "prisma/*"
             ],
             "@package": [
                 "package.json"
