@@ -15,7 +15,7 @@ function isForUser(node: Node, type: string) {
     'otherComprehensiveIncome'
   ];
 
-  if (node.children.length > 0 && allowTypes.includes(type)) {
+  if (node.children.length == 0 && allowTypes.includes(type)) {
     return true;
   }
 
