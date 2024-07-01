@@ -518,7 +518,7 @@ SYEAR,SSEASON,DIMENSIONS,REPORT_ID,MARK_CODE,REPORT_KIND,ACCOUNT_ID,ACCOUNT_CNAM
 2020,2,X,個別,一般,資產負債表,1995,　　　　其他非流動資產－其他,"　　　　Other non-current assets, others",tifrs-bsci-ci_OtherNoncurrentAssetsOthers-OtherNoncurrentAssetsOthers
 2020,2,X,個別,一般,資產負債表,1996,　　　　內部往來,　　　　Inter-department debits,tifrs-bsci-ci_InterdepartmentDebits
 2020,2,X,個別,一般,資產負債表,15XX,　　非流動資產合計,　　Total non-current assets,ifrs-full_NoncurrentAssets
-2020,2,X,個別,一般,資產負債表,XXX 1.00,　資產總計,　Total assets,ifrs-full_Assets
+2020,2,X,個別,一般,資產負債表,1XXX,　資產總計,　Total assets,ifrs-full_Assets
 2020,2,X,個別,一般,資產負債表,,負債及權益,Liabilities and equity,ifrs-full_EquityAndLiabilitiesAbstract
 2020,2,X,個別,一般,資產負債表,,　負債,　Liabilities,ifrs-full_LiabilitiesAbstract
 2020,2,X,個別,一般,資產負債表,,　　流動負債,　　Current liabilities,ifrs-full_CurrentLiabilitiesAbstract
@@ -665,7 +665,7 @@ SYEAR,SSEASON,DIMENSIONS,REPORT_ID,MARK_CODE,REPORT_KIND,ACCOUNT_ID,ACCOUNT_CNAM
 2020,2,X,個別,一般,資產負債表,2680,　　　　財務保證負債－非流動,　　　　Non-current financial guarantee liabilities,tifrs-bsci-ci_NonCurrentFinancialGuaranteeLiabilities
 2020,2,X,個別,一般,資產負債表,2690,　　　　內部往來,"　　　　Inter-department accounts, credit",tifrs-bsci-ci_InterdepartmentAccountsCredit
 2020,2,X,個別,一般,資產負債表,25XX,　　　非流動負債合計,　　　Total non-current liabilities,ifrs-full_NoncurrentLiabilities
-2020,2,X,個別,一般,資產負債表,XXX 2.00,　　負債總計,　　Total liabilities,ifrs-full_Liabilities
+2020,2,X,個別,一般,資產負債表,2XXX,　　負債總計,　　Total liabilities,ifrs-full_Liabilities
 2020,2,X,個別,一般,資產負債表,,　權益,　Equity,ifrs-full_EquityAbstract
 2020,2,X,個別,一般,資產負債表,,　　股本,　　Share capital,tifrs-bsci-ci_ShareCapitalAbstract
 2020,2,X,個別,一般,資產負債表,3110,　　　普通股股本,　　　Ordinary share,tifrs-bsci-ci_OrdinaryShare
@@ -780,7 +780,7 @@ SYEAR,SSEASON,DIMENSIONS,REPORT_ID,MARK_CODE,REPORT_KIND,ACCOUNT_ID,ACCOUNT_CNAM
 2020,2,X,個別,一般,資產負債表,3500,　　庫藏股票,　　Treasury shares,ifrs-full_TreasuryShares
 2020,2,X,個別,一般,資產負債表,35XX,　　共同控制下前手權益,　　Equity attributable to former owner of business combination under common control,tifrs-bsci-ci_EquityAttributableToFomerOwnerOfBusinessCombinationUnderCommonControl
 2020,2,X,個別,一般,資產負債表,355X,　　合併前非屬共同控制股權,　　Equity attributable to non-controlling interest before business combination under common control,tifrs-bsci-ci_EquityAttributableToNoncontrollingInterestBeforeBusinessCombinationUnderCommonControl
-2020,2,X,個別,一般,資產負債表,XXX 3.00,　　權益總計,　　Total equity,ifrs-full_Equity
+2020,2,X,個別,一般,資產負債表,3XXX,　　權益總計,　　Total equity,ifrs-full_Equity
 2020,2,X,個別,一般,資產負債表,3X2X,　負債及權益總計,　Total liabilities and equity,ifrs-full_EquityAndLiabilities
 2020,2,X,個別,一般,資產負債表,3997,　待註銷股本股數,　Number of share capital awaiting retirement,tifrs-bsci-ci_NumberOfShareCapitalAwaitingRetirement
 2020,2,X,個別,一般,資產負債表,3998,　預收股款（權益項下）之約當發行股數,　Equivalent issue shares of advance receipts for ordinary share,tifrs-bsci-ci_EquivalentIssueSharesOfAdvanceReceiptsForOrdinaryShare
@@ -1468,7 +1468,7 @@ SYEAR,SSEASON,DIMENSIONS,REPORT_ID,MARK_CODE,REPORT_KIND,ACCOUNT_ID,ACCOUNT_CNAM
 2020,2,X,個別,一般,現金流量表,E00212,　分類至待出售（非流動）資產（或處分群組）之現金及約當現金,"　(Non-current) assets (or disposal groups) classified as held for sale, net",ifrs-full_CashAndCashEquivalentsClassifiedAsPartOfDisposalGroupHeldForSale
 2020,2,X,個別,一般,現金流量表,E00214,　分類至待分配與業主之（非流動）資產（或處分群組）之現金及約當現金,"　(Non-current) assets (or disposal groups) classified as held for distribution to owners, net",tifrs-SCF_Non-currentAssetsOrDisposalGroupsClassifiedAsHeldForDistributionToOwnersNet
 2020,2,X,個別,一般,現金流量表,E00240,　其他符合國際會計準則第七號現金及約當現金定義之項目,Other items qualifying for cash and cash equivalents under the definition of IAS 7,tifrs-SCF_OtherItemsQualifyingForCashAndCashEquivalentsUnderTheDefinitionOfIas7
-2020,2,X,個別,一般,權益變動表,XXX 3.00,　　權益總額,　　Total equity,tifrs-es_TotalEquityMember
+2020,2,X,個別,一般,權益變動表,4XXX,　　權益總額,　　Total equity,tifrs-es_TotalEquityMember
 2020,2,X,個別,一般,權益變動表,3100,　　　股本合計,　　　Total share capital,ifrs-full_IssuedCapitalMember
 2020,2,X,個別,一般,權益變動表,3110,　　　　普通股股本,　　　　Ordinary share,tifrs-es_OrdinaryShareMember
 2020,2,X,個別,一般,權益變動表,3120,　　　　特別股股本,　　　　Preference share,tifrs-es_PreferenceShareMember

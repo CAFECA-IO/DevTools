@@ -30,9 +30,8 @@ function determineCategory(node: Node): string {
   const currentCode = node.code;
   const currentEName = node.accountEName.toLowerCase();
 
-  if (/^[A-Z]/.test(currentCode)) {
-    return currentCode.length <= 5 ? 'changeInEquity' : 'cashFlow';
-  }
+  if (node.reportKind == "現金流量表") return 'cashFlow';
+  if (node.reportKind == "權益變動表") return 'changeInEquity';
 
   if (currentEName.includes("comprehensive")) return 'otherComprehensiveIncome';
 

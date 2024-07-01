@@ -1,6 +1,7 @@
 import { Node } from '@/tools/account/node';
 import { AccountElement } from '@/tools/account/account_element';
 import { determineTypeDebitLiquidity } from '@/tools/account/determine_type_debit_liquidity';
+import { ROOT_LEVEL } from '@/constants/account';
 
 function isForUser(node: Node, type: string) {
   const allowTypes = [
@@ -99,15 +100,27 @@ export function createAccountElementsForSeederByBFS(rootNode: Node): AccountElem
       console.log(`Duplicated code: ${account.code}, name: ${account.name}`);
     }
 
-    node.children.forEach((child) => queue.push({
-      node: child,
-      parent: node,
-      root,
-      parentType: type,
-      parentDebit: debit,
-      parentLiquidity: liquidity,
-      level: level + 1
-    }));
+    if (level >= ROOT_LEVEL) {
+      node.children.forEach((child) => queue.push({
+        node: child,
+        parent: node,
+        root,
+        parentType: type,
+        parentDebit: debit,
+        parentLiquidity: liquidity,
+        level: level + 1
+      }));
+    } else {
+      node.children.forEach((child) => queue.push({
+        node: child,
+        parent: node,
+        root: child,
+        parentType: type,
+        parentDebit: debit,
+        parentLiquidity: liquidity,
+        level: level + 1
+      }));
+    }
   }
 
   checkForDuplicateCodes(accountsForSeeder, doubleCheck);
