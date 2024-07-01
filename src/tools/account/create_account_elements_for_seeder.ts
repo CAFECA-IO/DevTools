@@ -3,7 +3,7 @@ import { AccountElement } from '@/tools/account/account_element';
 import { determineTypeDebitLiquidity } from '@/tools/account/determine_type_debit_liquidity';
 import { ROOT_LEVEL } from '@/constants/account';
 
-function isForUser(node: Node, type: string) {
+function isForUser(node: Node, type: string, level: number) {
   const allowTypes = [
     'asset',
     'liability',
@@ -16,7 +16,7 @@ function isForUser(node: Node, type: string) {
     'otherComprehensiveIncome'
   ];
 
-  if (node.children.length == 0 && allowTypes.includes(type)) {
+  if (node.children.length == 0 && allowTypes.includes(type) && level >= ROOT_LEVEL) {
     return true;
   }
 
@@ -87,7 +87,7 @@ export function createAccountElementsForSeederByBFS(rootNode: Node): AccountElem
     const { node, parent, root, parentType, parentDebit, parentLiquidity, level } = queue.shift()!;
 
     const { type, debit, liquidity } = determineTypeDebitLiquidity(node, parentType, parentDebit, parentLiquidity);
-    const forUser = isForUser(node, type);
+    const forUser = isForUser(node, type, level);
 
     const account = createAccountElement(node, parent, root, type, debit, liquidity, forUser, level);
 
@@ -133,7 +133,7 @@ export function createAccountElementsForSeederByDFS(rootNode: Node) {
   const codeSet = new Set<string>();
   function dfsCreateAccountElement(node: Node, parent: Node, root: Node, parentType: string | null, parentDebit: boolean | null, parentLiquidity: boolean | null, level: number = 0) {
     const { type, debit, liquidity } = determineTypeDebitLiquidity(node, parentType, parentDebit, parentLiquidity);
-    const forUser = isForUser(node, type);
+    const forUser = isForUser(node, type, level);
     const account = createAccountElement(node, parent, root, type, debit, liquidity, forUser, level);
 
     if (!codeSet.has(account.code)) {
