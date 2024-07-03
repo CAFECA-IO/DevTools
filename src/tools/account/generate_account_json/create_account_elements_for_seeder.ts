@@ -1,6 +1,6 @@
-import { Node } from '@/tools/account/node';
-import { AccountElement } from '@/tools/account/account_element';
-import { determineTypeDebitLiquidity } from '@/tools/account/determine_type_debit_liquidity';
+import { Node } from '@/tools/account/generate_account_json/node';
+import { AccountElement } from '@/tools/account/generate_account_json/account_element';
+import { determineTypeDebitLiquidity } from '@/tools/account/generate_account_json/determine_type_debit_liquidity';
 import { ROOT_LEVEL } from '@/constants/account';
 
 function isForUser(node: Node, type: string, level: number) {

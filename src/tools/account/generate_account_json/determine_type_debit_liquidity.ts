@@ -1,4 +1,4 @@
-import { Node } from '@/tools/account/node';
+import { Node } from '@/tools/account/generate_account_json/node';
 
 function determineGainLossProfit(currentEName: string): string {
     const indexOfGain = currentEName.indexOf("gain");

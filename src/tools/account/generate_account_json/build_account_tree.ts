@@ -1,4 +1,4 @@
-import { Node } from "@/tools/account/node";
+import { Node } from "@/tools/account/generate_account_json/node";
 import { MISSING_CODE_MARKERS, SPECIAL_ACCOUNT_ASSIGNMENT, SPECIAL_ACCOUNT_MAPPING } from "@/constants/account";
 
 function countLeadingSpaces(str: string) {

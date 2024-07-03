@@ -4,7 +4,7 @@ module.exports = {
   extends: [
   "airbnb-base",
   "airbnb-typescript/base",
-  "prettier", + 
+  "prettier",
   "plugin:@typescript-eslint/eslint-recommended",
   "plugin:@typescript-eslint/recommended",
   ],
@@ -22,4 +22,18 @@ module.exports = {
       },
     },
   ],
+  "parserOptions": {
+    "project": ["./tsconfig.eslint.json"],
+  },
+  settings: {
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 };
