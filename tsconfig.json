@@ -28,7 +28,7 @@
         }
     },
     "include": [
-        "**/*.ts",
+        "**/*.ts", "**/*.tsx", "*.ts", "**/*.js", "**/*.jsx", "*.js", ".eslintrc.js"
     ],
     "exclude": [
         "node_modules"
