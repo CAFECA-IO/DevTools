@@ -1,4 +1,4 @@
-export class Node {
+export default class Node {
   code: string;
 
   reportKind: string;
@@ -11,7 +11,13 @@ export class Node {
 
   children: Node[] = [];
 
-  constructor(reportKind: string, code: string, accountCName: string, accountEName: string, elementId: string) {
+  constructor(
+    reportKind: string,
+    code: string,
+    accountCName: string,
+    accountEName: string,
+    elementId: string,
+  ) {
     this.code = code;
     this.reportKind = reportKind;
     this.accountCName = accountCName;

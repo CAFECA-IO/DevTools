@@ -1,5 +1,9 @@
-import { Node } from "@/tools/account/generate_account_json/node";
-import { MISSING_CODE_MARKERS, SPECIAL_ACCOUNT_ASSIGNMENT, SPECIAL_ACCOUNT_MAPPING } from "@/constants/account";
+import Node from "@/tools/account/generate_account_json/node";
+import {
+  MISSING_CODE_MARKERS,
+  SPECIAL_ACCOUNT_ASSIGNMENT,
+  SPECIAL_ACCOUNT_MAPPING,
+} from "@/constants/account";
 
 function countLeadingSpaces(str: string) {
   // Info: (20240625 - Murky) 資料內有全形空格
@@ -8,8 +12,8 @@ function countLeadingSpaces(str: string) {
   return spaceCount;
 }
 
-export function buildAccountTree(records: string[][]): Node {
-  const root = new Node('', '','', '', '');
+export default function buildAccountTree(records: string[][]): Node {
+  const root = new Node("", "", "", "", "");
   const maxLength = records.length;
   let counter = 1;
   function createNode(node: Node, currentLeadingSpaces: number) {
@@ -21,7 +25,13 @@ export function buildAccountTree(records: string[][]): Node {
         return;
       }
 
-      const child = new Node(currentLine[5], currentLine[6], currentLine[7], currentLine[8], currentLine[9]);
+      const child = new Node(
+        currentLine[5],
+        currentLine[6],
+        currentLine[7],
+        currentLine[8],
+        currentLine[9],
+      );
       node.children.push(child);
 
       counter += 1;
@@ -36,27 +46,38 @@ export function buildAccountTree(records: string[][]): Node {
       return node.code;
     }
 
-    let totalNode = node.children.find((child) => (
-      child.accountCName.trim() === `${node.accountCName.trim()}合計` ||
-      child.accountCName.trim() === `${node.accountCName.trim()}總計` ||
-      child.accountCName.trim() === `${node.accountCName.trim()}淨額` || 
-      child.accountCName.trim() === `${node.accountCName.trim()}總額`
-    ));
+    let totalNode = node.children.find(
+      (child) =>
+        child.accountCName.trim() === `${node.accountCName.trim()}合計` ||
+        child.accountCName.trim() === `${node.accountCName.trim()}總計` ||
+        child.accountCName.trim() === `${node.accountCName.trim()}淨額` ||
+        child.accountCName.trim() === `${node.accountCName.trim()}總額`,
+    );
     let mappingCode: string | undefined;
-    
+
     if (!totalNode) {
       const mappingName = SPECIAL_ACCOUNT_MAPPING.get(node.accountCName.trim());
-      totalNode = node.children.find((child) => child.accountCName.trim() === mappingName);
-      mappingCode = totalNode?.code || SPECIAL_ACCOUNT_ASSIGNMENT.get(node.accountCName.trim()) || undefined;
+      totalNode = node.children.find(
+        (child) => child.accountCName.trim() === mappingName,
+      );
+      mappingCode =
+        totalNode?.code ||
+        SPECIAL_ACCOUNT_ASSIGNMENT.get(node.accountCName.trim()) ||
+        undefined;
     }
-    
+
     const childCode = assignMissingCode(node.children[0], depth + 1);
-    const code = totalNode?.code || mappingCode || `${childCode.slice(0, 4)}${MISSING_CODE_MARKERS[depth]}`;
+    const code =
+      totalNode?.code ||
+      mappingCode ||
+      `${childCode.slice(0, 4)}${MISSING_CODE_MARKERS[depth]}`;
 
     // Info: (20240625 - Murky) I need to change the code from original node
     // eslint-disable-next-line no-param-reassign
     node.code = code;
 
+    // Info: (20240625 - Murky) I need to change the code from original node
+    // eslint-disable-next-line no-param-reassign
     node.children = node.children.filter((child) => child !== totalNode);
     return childCode;
   }

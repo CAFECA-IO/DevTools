@@ -1,48 +1,55 @@
-import { Node } from '@/tools/account/generate_account_json/node';
+import Node from "@/tools/account/generate_account_json/node";
 
 function determineGainLossProfit(currentEName: string): string {
-    const indexOfGain = currentEName.indexOf("gain");
-    const indexOfLoss = currentEName.indexOf("loss");
+  const indexOfGain = currentEName.indexOf("gain");
+  const indexOfLoss = currentEName.indexOf("loss");
 
-    if (indexOfGain !== -1 && indexOfLoss !== -1) {
-        return indexOfGain < indexOfLoss ? 'gain' : 'loss';
-    }
+  if (indexOfGain !== -1 && indexOfLoss !== -1) {
+    return indexOfGain < indexOfLoss ? "gain" : "loss";
+  }
 
-    if (indexOfGain !== -1) return 'gain';
-    if (indexOfLoss !== -1) return 'loss';
+  if (indexOfGain !== -1) return "gain";
+  if (indexOfLoss !== -1) return "loss";
 
-    return 'profit';
+  return "profit";
 }
 
 function determineEquityLiability(currentEName: string): string {
-    if (currentEName.includes("equity")) return 'equity';
-    if (currentEName.includes("liability")) {
-        return currentEName.includes("non-current") ? 'nonCurrentLiability' : 'currentLiability';
-    }
-    return 'other';
+  if (currentEName.includes("equity")) return "equity";
+  if (currentEName.includes("liability")) {
+    return currentEName.includes("non-current")
+      ? "nonCurrentLiability"
+      : "currentLiability";
+  }
+  return "other";
 }
 
 function determineAsset(currentEName: string): string {
-    return currentEName.includes("non-current") ? 'nonCurrentAsset' : 'currentAsset';
+  return currentEName.includes("non-current")
+    ? "nonCurrentAsset"
+    : "currentAsset";
 }
 
 function determineCategory(node: Node): string {
-  const currentCode = node.code;
   const currentEName = node.accountEName.toLowerCase();
 
-  if (node.reportKind == "現金流量表") return 'cashFlow';
-  if (node.reportKind == "權益變動表") return 'changeInEquity';
+  if (node.reportKind === "現金流量表") return "cashFlow";
+  if (node.reportKind === "權益變動表") return "changeInEquity";
 
-  if (currentEName.includes("comprehensive")) return 'otherComprehensiveIncome';
+  if (currentEName.includes("comprehensive")) return "otherComprehensiveIncome";
 
-  if (currentEName.includes("gain") || currentEName.includes("loss") || currentEName.includes("profit")) {
+  if (
+    currentEName.includes("gain") ||
+    currentEName.includes("loss") ||
+    currentEName.includes("profit")
+  ) {
     return determineGainLossProfit(currentEName);
   }
 
-  if (currentEName.includes("income")) return 'income';
-  if (currentEName.includes("expense")) return 'expense';
-  if (currentEName.includes("cost")) return 'cost';
-  if (currentEName.includes("revenue")) return 'revenue';
+  if (currentEName.includes("income")) return "income";
+  if (currentEName.includes("expense")) return "expense";
+  if (currentEName.includes("cost")) return "cost";
+  if (currentEName.includes("revenue")) return "revenue";
 
   if (currentEName.includes("equity") || currentEName.includes("liability")) {
     return determineEquityLiability(currentEName);
@@ -52,46 +59,93 @@ function determineCategory(node: Node): string {
     return determineAsset(currentEName);
   }
 
-  return 'other';
+  return "other";
 }
 
-function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(category: string, parentType: string | null, parentDebit: boolean | null, parentLiquidity: boolean | null) {
+function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
+  category: string,
+  parentType: string | null,
+  parentDebit: boolean | null,
+  parentLiquidity: boolean | null,
+) {
   const defaultValues = {
     type: parentType,
     debit: parentDebit,
-    liquidity: parentLiquidity
+    liquidity: parentLiquidity,
   };
 
   switch (category) {
-    case 'changeInEquity':
-    case 'cashFlow':
-    case 'otherComprehensiveIncome':
-    case 'income':
-    case 'revenue':
-      return { type: defaultValues.type || category, debit: defaultValues.debit ?? false, liquidity: defaultValues.liquidity ?? true };
-    case 'gain':
-    case 'profit':
-      return { type: defaultValues.type || 'gainOrLoss', debit: defaultValues.debit ?? false, liquidity: defaultValues.liquidity ?? true };
-    case 'loss':
-      return { type: defaultValues.type || 'gainOrLoss', debit: defaultValues.debit ?? true, liquidity: defaultValues.liquidity ?? true };
-    case 'expense':
-    case 'cost':
-      return { type: defaultValues.type || category, debit: defaultValues.debit ?? true, liquidity: defaultValues.liquidity ?? true };
-    case 'equity':
-      return { type: defaultValues.type || 'equity', debit: defaultValues.debit ?? false, liquidity: defaultValues.liquidity ?? false };
-    case 'nonCurrentLiability':
-    case 'currentLiability':
-      return { type: defaultValues.type || 'liability', debit: defaultValues.debit ?? false, liquidity: defaultValues.liquidity ?? (category === 'currentLiability') };
-    case 'nonCurrentAsset':
-    case 'currentAsset':
-      return { type: defaultValues.type || 'asset', debit: defaultValues.debit ?? true, liquidity: defaultValues.liquidity ?? (category === 'currentAsset') };
+    case "changeInEquity":
+    case "cashFlow":
+    case "otherComprehensiveIncome":
+    case "income":
+    case "revenue":
+      return {
+        type: defaultValues.type || category,
+        debit: defaultValues.debit ?? false,
+        liquidity: defaultValues.liquidity ?? true,
+      };
+    case "gain":
+    case "profit":
+      return {
+        type: defaultValues.type || "gainOrLoss",
+        debit: defaultValues.debit ?? false,
+        liquidity: defaultValues.liquidity ?? true,
+      };
+    case "loss":
+      return {
+        type: defaultValues.type || "gainOrLoss",
+        debit: defaultValues.debit ?? true,
+        liquidity: defaultValues.liquidity ?? true,
+      };
+    case "expense":
+    case "cost":
+      return {
+        type: defaultValues.type || category,
+        debit: defaultValues.debit ?? true,
+        liquidity: defaultValues.liquidity ?? true,
+      };
+    case "equity":
+      return {
+        type: defaultValues.type || "equity",
+        debit: defaultValues.debit ?? false,
+        liquidity: defaultValues.liquidity ?? false,
+      };
+    case "nonCurrentLiability":
+    case "currentLiability":
+      return {
+        type: defaultValues.type || "liability",
+        debit: defaultValues.debit ?? false,
+        liquidity: defaultValues.liquidity ?? category === "currentLiability",
+      };
+    case "nonCurrentAsset":
+    case "currentAsset":
+      return {
+        type: defaultValues.type || "asset",
+        debit: defaultValues.debit ?? true,
+        liquidity: defaultValues.liquidity ?? category === "currentAsset",
+      };
     default:
-      return { type: defaultValues.type || 'other', debit: defaultValues.debit ?? true, liquidity: defaultValues.liquidity ?? true };
+      return {
+        type: defaultValues.type || "other",
+        debit: defaultValues.debit ?? true,
+        liquidity: defaultValues.liquidity ?? true,
+      };
   }
 }
 
-export function determineTypeDebitLiquidity(node: Node, parentType: string | null, parentDebit: boolean | null, parentLiquidity: boolean | null) {
+export default function determineTypeDebitLiquidity(
+  node: Node,
+  parentType: string | null,
+  parentDebit: boolean | null,
+  parentLiquidity: boolean | null,
+) {
   const category = determineCategory(node);
-  const defaultValue = getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(category, parentType, parentDebit, parentLiquidity);
+  const defaultValue = getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
+    category,
+    parentType,
+    parentDebit,
+    parentLiquidity,
+  );
   return defaultValue;
 }
