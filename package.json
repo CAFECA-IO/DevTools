@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-account-json": "ts-node  -r tsconfig-paths/register --compiler-options '{\"module\":\"CommonJS\"}' src/tools/account/generate_account_json/account_csv_to_json.ts",
+    "generate_account_json": "ts-node  -r tsconfig-paths/register --compiler-options '{\"module\":\"CommonJS\"}' src/tools/account/generate_account_json/account_csv_to_json.ts",
     "generate_sheet_mapping": "ts-node  -r tsconfig-paths/register --compiler-options '{\"module\":\"CommonJS\"}' src/tools/account/generate_sheet_mapping/generate_mapping.ts"
   },
   "keywords": [],
