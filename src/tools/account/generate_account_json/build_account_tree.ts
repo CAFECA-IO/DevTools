@@ -4,13 +4,7 @@ import {
   SPECIAL_ACCOUNT_ASSIGNMENT,
   SPECIAL_ACCOUNT_MAPPING,
 } from "@/constants/account";
-
-function countLeadingSpaces(str: string) {
-  // Info: (20240625 - Murky) 資料內有全形空格
-  // eslint-disable-next-line no-irregular-whitespace
-  const spaceCount = str.search(/\S/);
-  return spaceCount;
-}
+import { countLeadingSpaces } from "@/lib/utils/common";
 
 export default function buildAccountTree(records: string[][]): Node {
   const root = new Node("", "", "", "", "");

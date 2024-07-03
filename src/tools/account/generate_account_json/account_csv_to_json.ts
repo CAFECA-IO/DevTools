@@ -8,24 +8,17 @@ import Node from "@/tools/account/generate_account_json/node";
 import AccountElement from "@/tools/account/generate_account_json/account_element";
 import buildAccountTree from "@/tools/account/generate_account_json/build_account_tree";
 import { createAccountElementsForSeederByBFS } from "@/tools/account/generate_account_json/create_account_elements_for_seeder";
+import { saveToJson } from "@/lib/utils/common";
 
-const csvPath = path.resolve(__dirname, "../../raw_data/tifrs_accounts.csv");
-const treeJsonPath = path.resolve(__dirname, "../../outputs/account_tree.json");
+const csvPath = path.resolve(__dirname, "../../../raw_data/tifrs_accounts.csv");
+const treeJsonPath = path.resolve(
+  __dirname,
+  "../../../outputs/account_tree.json",
+);
 const accountElementsJsonPath = path.resolve(
   __dirname,
-  "../../outputs/account.json",
+  "../../../outputs/account.json",
 );
-
-function saveTreeToJson(tree: Node, filePath: string) {
-  fs.writeFileSync(filePath, JSON.stringify(tree, Object.keys(tree).sort(), 2));
-}
-
-function saveAccountElementsToJson(
-  accountElements: AccountElement[],
-  filePath: string,
-) {
-  fs.writeFileSync(filePath, JSON.stringify(accountElements, null, 2));
-}
 
 function parseCSV(filePath: string) {
   return new Promise((resolve, reject) => {
@@ -53,12 +46,12 @@ parseCSV(csvPath)
     return tree;
   })
   .then((tree: Node) => {
-    saveTreeToJson(tree, treeJsonPath);
+    saveToJson<Node>(treeJsonPath, tree);
     const accountElements = createAccountElementsForSeederByBFS(tree);
     return accountElements;
   })
   .then((accountElements: AccountElement[]) => {
-    saveAccountElementsToJson(accountElements, accountElementsJsonPath);
+    saveToJson<AccountElement[]>(accountElementsJsonPath, accountElements);
   })
   .catch((err) => {
     // Debug: (20240625 - Murky) Debug
