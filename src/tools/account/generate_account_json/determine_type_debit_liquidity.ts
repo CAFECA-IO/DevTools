@@ -67,6 +67,7 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
   parentType: string | null,
   parentDebit: boolean | null,
   parentLiquidity: boolean | null,
+  node: Node,
 ) {
   const defaultValues = {
     type: parentType,
@@ -74,64 +75,87 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
     liquidity: parentLiquidity,
   };
 
+  let returnValue: {
+    type: string;
+    debit: boolean;
+    liquidity: boolean;
+  };
   switch (category) {
     case "changeInEquity":
     case "cashFlow":
     case "otherComprehensiveIncome":
     case "income":
     case "revenue":
-      return {
+      returnValue = {
         type: defaultValues.type || category,
         debit: defaultValues.debit ?? false,
         liquidity: defaultValues.liquidity ?? true,
       };
+      break;
     case "gain":
     case "profit":
-      return {
+      returnValue = {
         type: defaultValues.type || "gainOrLoss",
         debit: defaultValues.debit ?? false,
         liquidity: defaultValues.liquidity ?? true,
       };
+      break;
     case "loss":
-      return {
+      returnValue = {
         type: defaultValues.type || "gainOrLoss",
         debit: defaultValues.debit ?? true,
         liquidity: defaultValues.liquidity ?? true,
       };
+      break;
     case "expense":
     case "cost":
-      return {
+      returnValue = {
         type: defaultValues.type || category,
         debit: defaultValues.debit ?? true,
         liquidity: defaultValues.liquidity ?? true,
       };
+      break;
     case "equity":
-      return {
+      returnValue = {
         type: defaultValues.type || "equity",
         debit: defaultValues.debit ?? false,
         liquidity: defaultValues.liquidity ?? false,
       };
+      break;
     case "nonCurrentLiability":
     case "currentLiability":
-      return {
+      returnValue = {
         type: defaultValues.type || "liability",
         debit: defaultValues.debit ?? false,
         liquidity: defaultValues.liquidity ?? category === "currentLiability",
       };
+      break;
     case "nonCurrentAsset":
     case "currentAsset":
-      return {
+      returnValue = {
         type: defaultValues.type || "asset",
         debit: defaultValues.debit ?? true,
         liquidity: defaultValues.liquidity ?? category === "currentAsset",
       };
+      break;
     default:
-      return {
+      returnValue = {
         type: defaultValues.type || "other",
         debit: defaultValues.debit ?? true,
         liquidity: defaultValues.liquidity ?? true,
       };
+      break;
   }
+  if (
+    (node.accountCName.includes("備抵") ||
+      node.accountCName.includes("累計") ||
+      node.accountCName.includes("退回") ||
+      node.accountCName.includes("折讓")) &&
+    !node.accountCName.includes("減損迴轉")
+  ) {
+    returnValue.debit = !returnValue.debit;
+  }
+  return returnValue;
 }
 
 export default function determineTypeDebitLiquidity(
@@ -146,6 +170,7 @@ export default function determineTypeDebitLiquidity(
     parentType,
     parentDebit,
     parentLiquidity,
+    node,
   );
   return defaultValue;
 }
