@@ -7,7 +7,7 @@ export default class AccountRow {
 
   constructor(code: string, name: string, indent: number) {
     this.code = code;
-    this.name = name;
+    this.name = name.trim();
     this.indent = indent;
   }
 }
