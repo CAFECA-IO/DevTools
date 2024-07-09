@@ -155,6 +155,20 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
   ) {
     returnValue.debit = !returnValue.debit;
   }
+
+  // Info: (20240709 - Murky) 損失應該要是debit
+  if (
+    (/損失$/.test(node.accountCName) ||
+      /損失\(利益\)$/.test(node.accountCName)) &&
+    !/利益及損失$/.test(node.accountCName)
+  ) {
+    returnValue.debit = true;
+  }
+
+  // Info: (20240709 - Murky) 利益應該要是credit
+  if (/利益$/.test(node.accountCName)) {
+    returnValue.debit = false;
+  }
   return returnValue;
 }
 
