@@ -12,8 +12,9 @@ export default class BalanceSheet extends Sheet<
 
   generateOutputData(): AccountRow[] {
     this.outputData = this.rawSheet.map((row) => {
-      const name = row["項目名稱"]?.trim() || "";
+      let name = row["項目名稱"] || "";
       const leadingSpace = countLeadingSpaces(name);
+      name = name.trim();
       const code = row["項目代號"] || "";
 
       const accountRow = new AccountRow(code, name, leadingSpace);
