@@ -1,8 +1,8 @@
 import Node from "@/tools/account/generate_account_json/node";
 
 function determineGainLossProfit(currentEName: string): string {
-  const indexOfGain = currentEName.indexOf("gain");
-  const indexOfLoss = currentEName.indexOf("loss");
+  const indexOfGain = currentEName.toLowerCase().indexOf("gain");
+  const indexOfLoss = currentEName.toLowerCase().indexOf("loss");
 
   if (indexOfGain !== -1 && indexOfLoss !== -1) {
     return indexOfGain < indexOfLoss ? "gain" : "loss";
@@ -15,9 +15,17 @@ function determineGainLossProfit(currentEName: string): string {
 }
 
 function determineEquityLiability(currentEName: string): string {
-  if (currentEName.includes("equity")) return "equity";
-  if (currentEName.includes("liability")) {
-    return currentEName.includes("non-current")
+  if (currentEName.toLowerCase() === "liabilities and equity") return "other";
+  if (
+    currentEName.toLowerCase().includes("equity") &&
+    !currentEName.toLowerCase().includes("liabilities")
+  )
+    return "equity";
+  if (
+    currentEName.toLowerCase().includes("liability") ||
+    currentEName.toLowerCase().includes("liabilities")
+  ) {
+    return currentEName.toLowerCase().includes("non-current")
       ? "nonCurrentLiability"
       : "currentLiability";
   }
@@ -25,7 +33,7 @@ function determineEquityLiability(currentEName: string): string {
 }
 
 function determineAsset(currentEName: string): string {
-  return currentEName.includes("non-current")
+  return currentEName.toLowerCase().includes("non-current")
     ? "nonCurrentAsset"
     : "currentAsset";
 }
@@ -36,27 +44,32 @@ function determineCategory(node: Node): string {
   if (node.reportKind === "現金流量表") return "cashFlow";
   if (node.reportKind === "權益變動表") return "changeInEquity";
 
-  if (currentEName.includes("comprehensive")) return "otherComprehensiveIncome";
+  if (currentEName.toLowerCase().includes("comprehensive"))
+    return "otherComprehensiveIncome";
 
   if (
-    currentEName.includes("gain") ||
-    currentEName.includes("loss") ||
-    currentEName.includes("profit")
+    currentEName.toLowerCase().includes("gain") ||
+    currentEName.toLowerCase().includes("loss") ||
+    currentEName.toLowerCase().includes("profit")
   ) {
-    return determineGainLossProfit(currentEName);
+    return determineGainLossProfit(currentEName.toLowerCase());
   }
 
-  if (currentEName.includes("income")) return "income";
-  if (currentEName.includes("expense")) return "expense";
-  if (currentEName.includes("cost")) return "cost";
-  if (currentEName.includes("revenue")) return "revenue";
+  if (currentEName.toLowerCase().includes("income")) return "income";
+  if (currentEName.toLowerCase().includes("expense")) return "expense";
+  if (currentEName.toLowerCase().includes("cost")) return "cost";
+  if (currentEName.toLowerCase().includes("revenue")) return "revenue";
 
-  if (currentEName.includes("equity") || currentEName.includes("liability")) {
-    return determineEquityLiability(currentEName);
+  if (
+    currentEName.toLowerCase().includes("equity") ||
+    currentEName.toLowerCase().includes("liability") ||
+    currentEName.toLowerCase().includes("liabilities")
+  ) {
+    return determineEquityLiability(currentEName.toLowerCase());
   }
 
-  if (currentEName.includes("asset")) {
-    return determineAsset(currentEName);
+  if (currentEName.toLowerCase().includes("asset")) {
+    return determineAsset(currentEName.toLowerCase());
   }
 
   return "other";
@@ -69,8 +82,12 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
   parentLiquidity: boolean | null,
   node: Node,
 ) {
+  if (node.accountCName.includes("　　流動負債")) {
+    console.log(node);
+    console.log(category, parentType, parentDebit, parentLiquidity);
+  }
   const defaultValues = {
-    type: parentType,
+    type: parentType === "other" ? null : parentType,
     debit: parentDebit,
     liquidity: parentLiquidity,
   };
