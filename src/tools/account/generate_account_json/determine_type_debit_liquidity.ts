@@ -14,7 +14,10 @@ function determineGainLossProfit(currentEName: string): string {
   return "profit";
 }
 
-function determineEquityLiability(currentEName: string): string {
+function determineEquityLiability(
+  currentEName: string,
+  elementId: string,
+): string {
   if (currentEName.toLowerCase() === "liabilities and equity") return "other";
   if (
     currentEName.toLowerCase().includes("equity") &&
@@ -25,21 +28,24 @@ function determineEquityLiability(currentEName: string): string {
     currentEName.toLowerCase().includes("liability") ||
     currentEName.toLowerCase().includes("liabilities")
   ) {
-    return currentEName.toLowerCase().includes("non-current")
+    return currentEName.toLowerCase().includes("non-current") ||
+      elementId.toLowerCase().includes("noncurrent")
       ? "nonCurrentLiability"
       : "currentLiability";
   }
   return "other";
 }
 
-function determineAsset(currentEName: string): string {
-  return currentEName.toLowerCase().includes("non-current")
+function determineAsset(currentEName: string, elementId: string): string {
+  return currentEName.toLowerCase().includes("non-current") ||
+    elementId.toLowerCase().includes("noncurrent")
     ? "nonCurrentAsset"
     : "currentAsset";
 }
 
 function determineCategory(node: Node): string {
   const currentEName = node.accountEName.toLowerCase();
+  const currentElementId = node.elementId.toLowerCase();
 
   if (node.reportKind === "現金流量表") return "cashFlow";
   if (node.reportKind === "權益變動表") return "changeInEquity";
@@ -65,11 +71,14 @@ function determineCategory(node: Node): string {
     currentEName.toLowerCase().includes("liability") ||
     currentEName.toLowerCase().includes("liabilities")
   ) {
-    return determineEquityLiability(currentEName.toLowerCase());
+    return determineEquityLiability(
+      currentEName.toLowerCase(),
+      currentElementId,
+    );
   }
 
   if (currentEName.toLowerCase().includes("asset")) {
-    return determineAsset(currentEName.toLowerCase());
+    return determineAsset(currentEName.toLowerCase(), currentElementId);
   }
 
   return "other";
@@ -82,14 +91,14 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
   parentLiquidity: boolean | null,
   node: Node,
 ) {
-  if (node.accountCName.includes("　　流動負債")) {
+  if (node.accountCName.includes("　　非流動負債")) {
     console.log(node);
     console.log(category, parentType, parentDebit, parentLiquidity);
   }
   const defaultValues = {
     type: parentType === "other" ? null : parentType,
     debit: parentDebit,
-    liquidity: parentLiquidity,
+    liquidity: parentType === "other" ? null : parentLiquidity,
   };
 
   let returnValue: {
@@ -144,7 +153,7 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
       returnValue = {
         type: defaultValues.type || "liability",
         debit: defaultValues.debit ?? false,
-        liquidity: defaultValues.liquidity ?? category === "currentLiability",
+        liquidity: category === "currentLiability",
       };
       break;
     case "nonCurrentAsset":
@@ -152,7 +161,7 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
       returnValue = {
         type: defaultValues.type || "asset",
         debit: defaultValues.debit ?? true,
-        liquidity: defaultValues.liquidity ?? category === "currentAsset",
+        liquidity: category === "currentAsset",
       };
       break;
     default:
