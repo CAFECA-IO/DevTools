@@ -9,6 +9,7 @@ import AccountElement from "@/tools/account/generate_account_json/account_elemen
 import buildAccountTree from "@/tools/account/generate_account_json/build_account_tree";
 import { createAccountElementsForSeederByBFS } from "@/tools/account/generate_account_json/create_account_elements_for_seeder";
 import { saveToJson } from "@/lib/utils/common";
+import adjustAccountElements from "@/tools/account/generate_account_json/adjust_account_elements";
 
 const csvPath = path.resolve(__dirname, "../../../raw_data/tifrs_accounts.csv");
 const treeJsonPath = path.resolve(
@@ -51,7 +52,11 @@ parseCSV(csvPath)
     return accountElements;
   })
   .then((accountElements: AccountElement[]) => {
-    saveToJson<AccountElement[]>(accountElementsJsonPath, accountElements);
+    const adjustedAccountElements = adjustAccountElements(accountElements);
+    return adjustedAccountElements;
+  })
+  .then((adjustedAccountElements: AccountElement[]) => {
+    saveToJson<AccountElement[]>(accountElementsJsonPath, adjustedAccountElements);
   })
   .catch((err) => {
     // Debug: (20240625 - Murky) Debug
