@@ -91,10 +91,6 @@ function getDefaultTypeDebitLiquidityBaseOnCategoryAndParent(
   parentLiquidity: boolean | null,
   node: Node,
 ) {
-  if (node.accountCName.includes("　　非流動負債")) {
-    console.log(node);
-    console.log(category, parentType, parentDebit, parentLiquidity);
-  }
   const defaultValues = {
     type: parentType === "other" ? null : parentType,
     debit: parentDebit,

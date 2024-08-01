@@ -33,6 +33,22 @@ export default function buildAccountTree(records: string[][]): Node {
     }
   }
 
+  function flatLiabilitiesAndEquity(node: Node) {
+    const liabilityAndEquityNode = node.children.find(
+      (n) => n.elementId === "ifrs-full_EquityAndLiabilitiesAbstract",
+    );
+
+    if (!liabilityAndEquityNode) {
+      return;
+    }
+    for (let i = 0; i < liabilityAndEquityNode?.children.length || 0; i += 1) {
+      const child = liabilityAndEquityNode.children.shift();
+      if (child) {
+        node.children.push(child);
+      }
+    }
+  }
+
   function assignMissingCode(node: Node, depth: number): string {
     node.children.forEach((child) => assignMissingCode(child, depth + 1));
 
@@ -77,6 +93,7 @@ export default function buildAccountTree(records: string[][]): Node {
   }
 
   createNode(root, -1);
+  flatLiabilitiesAndEquity(root);
   assignMissingCode(root, 0);
   return root;
 }

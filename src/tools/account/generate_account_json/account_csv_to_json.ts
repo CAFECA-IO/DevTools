@@ -56,7 +56,10 @@ parseCSV(csvPath)
     return adjustedAccountElements;
   })
   .then((adjustedAccountElements: AccountElement[]) => {
-    saveToJson<AccountElement[]>(accountElementsJsonPath, adjustedAccountElements);
+    saveToJson<AccountElement[]>(
+      accountElementsJsonPath,
+      adjustedAccountElements,
+    );
   })
   .catch((err) => {
     // Debug: (20240625 - Murky) Debug
